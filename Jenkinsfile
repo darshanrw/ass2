@@ -43,7 +43,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 // Run the Docker container
-                sh 'docker run -d --name assignment2 -p 8080:8080 express-app'
+                sh 'docker run -d --name ass2 -p 8081:8081 express-app'
             }
         }
 
