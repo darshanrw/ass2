@@ -13,13 +13,13 @@ pipeline {
             steps {
                 // Simulate a build process
                 echo "Starting the build process"
-                sh 'docker buildx create --name mybuilder --use || echo "Builder already exists"'
-                sh 'docker buildx inspect --bootstrap'
-                sh 'docker build -t express-app .'
-                sh 'docker image ls'
-                sh 'docker run -d --name lab2 -p 8081:8081 express-app'
-                sh 'docker ps -a'
                 sh '''
+                docker buildx create --name mybuilder --use || echo "Builder already exists"
+                docker buildx inspect --bootstrap
+                docker build -t express-app .
+                docker image ls
+                docker run -d --name lab2 -p 8081:8081 express-app
+                docker ps -a
                 docker stop lab2 || true
                 docker rm lab2 || true
                 '''
