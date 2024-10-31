@@ -44,7 +44,7 @@ pipeline {
                     } else {
                         echo "Build failed! Notifying team..."
                     }
-                    // Here you could integrate notifications via email, Slack, etc.
+                    
                     // For example, using email:
                     // mail to: 'team@example.com', subject: "Build ${currentBuild.result}", body: "The build completed with status: ${currentBuild.result}"
                 }
