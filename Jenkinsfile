@@ -43,7 +43,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 // Run the Docker container
-                sh 'docker run -d --name ass2 -p 8081:8081 express-app'
+                sh 'docker run -d --name lab2 -p 8081:8081 express-app'
             }
         }
 
@@ -58,8 +58,8 @@ pipeline {
             steps {
                 // Stop and remove the container to clean up
                 sh '''
-                docker stop assignment2 || true
-                docker rm assignment2 || true
+                docker stop lab2 || true
+                docker rm lab2 || true
                 '''
             }
         }

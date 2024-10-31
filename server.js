@@ -3,7 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 8081;
 
 app.get('/', (req, res) => {
-  res.send('Hello from Darshan!!!');
+  res.send('Lab 2 Completed Successfully!!!');
 });
 
 if (require.main === module) {
