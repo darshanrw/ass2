@@ -2,66 +2,61 @@ pipeline {
     agent any
     
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                // Checkout the code from the repository
+                // Clone the GitHub repository
                 checkout scm
             }
         }
 
-        stage('Set Up Docker Buildx') {
+        stage('Build') {
             steps {
-                // Set up Docker Buildx
+                // Simulate a build process
+                echo "Starting the build process"
                 sh 'docker buildx create --name mybuilder --use || echo "Builder already exists"'
                 sh 'docker buildx inspect --bootstrap'
-            }
-        }
-
-        stage('Cache Docker Layers') {
-            steps {
-                // Caching Docker layers to speed up builds
-                // Jenkins does not support caching natively like GitHub Actions, but 
-                // Docker’s own layer caching will apply if the workspace is reused.
-                echo "Using Docker's own caching mechanism as a substitute for GitHub Actions caching."
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                // Build the Docker image
                 sh 'docker build -t express-app .'
-            }
-        }
-
-        stage('Verify Docker Image') {
-            steps {
-                // List Docker images to verify the image was built
                 sh 'docker image ls'
-            }
-        }
-
-        stage('Run Docker Container') {
-            steps {
-                // Run the Docker container
                 sh 'docker run -d --name lab2 -p 8081:8081 express-app'
-            }
-        }
-
-        stage('Verify Running Container') {
-            steps {
-                // Verify the running container
                 sh 'docker ps -a'
-            }
-        }
-
-        stage('Stop and Remove Docker Container') {
-            steps {
-                // Stop and remove the container to clean up
                 sh '''
                 docker stop lab2 || true
                 docker rm lab2 || true
                 '''
+        
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run a simple test command
+                echo "Running tests"
+            
+            }
+        }
+
+        stage('Notification') {
+            steps {
+                // Send a notification based on build result
+                script {
+                    if (currentBuild.result == 'SUCCESS' || currentBuild.result == null) {
+                        echo "Build succeeded! Notifying team..."
+                    } else {
+                        echo "Build failed! Notifying team..."
+                    }
+                    // Here you could integrate notifications via email, Slack, etc.
+                    // For example, using email:
+                    // mail to: 'team@example.com', subject: "Build ${currentBuild.result}", body: "The build completed with status: ${currentBuild.result}"
+                }
             }
         }
     }
+
+    post {
+        always {
+            // Optional cleanup steps can be added here
+            echo "Build and test stages complete."
+        }
+    }
 }
+
